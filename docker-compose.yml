@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  student-service:
+    build:
+      context: ./ms-student-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8080"
+    networks:
+      - backend
+
+  fee-service:
+    build:
+      context: ./ms-fee-collection-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    networks:
+      - backend
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - student-service
+      - fee-service
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
