@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/receipts")
+@RequestMapping("/api/receipt")
 @Tag(name = "Receipt API", description = "API for managing fee receipts")
 public class ReceiptController {
     @Autowired
@@ -26,7 +26,7 @@ public class ReceiptController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedReceipt);
     }
 
-    @GetMapping("/student/{studentId}")
+    @GetMapping("/{studentId}")
     @Operation(summary = "Get receipts by student ID", description = "Retrieve all receipts for a specific student by their ID")
     public ResponseEntity<List<Receipt>> getReceipts(@PathVariable String studentId) {
         List<Receipt> receipts = receiptService.getReceiptsByStudentId(studentId);
