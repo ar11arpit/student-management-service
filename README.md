@@ -35,6 +35,7 @@ This project consists of two microservices built using Spring Boot to manage stu
 ```bash
 git clone https://github.com/your-github-username/student-management-system.git
 cd student-management-system
+git checkout master
 ```
 
 #### Build and Run
@@ -84,11 +85,11 @@ The goal of this project is to create a set of microservices to manage student f
     - Refer to the sample receipt provided in the documentation.
     - Match the fields as closely as possible to the sample.
 
-- **Data Access**: Use Spring Data JPA for data access and H2 in-memory database for storage.
+- **Data Access**: Spring Data JPA for data access and H2 in-memory database for storage.
 
-- **API Design**: Follow either API First or Code First design approach for the APIs.
+- **API Design**: API First or Code First design approach for the APIs.
 
-- **Documentation and Testing**: Provide Swagger specifications and Postman collections for API testing.
+- **Documentation and Testing**: Swagger specifications and Postman collections for API testing.
 
 ### Fee Collection Details
 
@@ -106,29 +107,6 @@ The fields for the receipt should closely match the following sample receipt str
 - **Spring Data JPA**: Used for data access.
 - **H2 In-memory Database**: Used for storing data.
 
-##### Receipt Entity Example
-```java
-@Entity
-public class Receipt {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long receiptId;
-    private String studentId;
-    private BigDecimal amount;
-    private LocalDate date;
-    private String description;
-
-    // Getters and setters
-}
-```
-
-##### Repository Interface
-```java
-public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
-    List<Receipt> findByStudentId(String studentId);
-}
-```
-
 #### API Design
 - **API First**: Define the API using Swagger/OpenAPI specification first and generate code stubs.
 - **Code First**: Write the code first and generate Swagger documentation from annotations.
@@ -137,29 +115,6 @@ This project follows the **Code First** approach, where APIs are defined using S
 
 #### Documentation and Testing
 - **Swagger**: Used for documenting the APIs. The Swagger UI is available at the endpoints mentioned above.
-- **Postman Collections**: Provided in the `postman` directory for testing the APIs.
-
-##### Example of API Definition (Code First)
-```java
-@RestController
-@RequestMapping("/fees")
-public class FeeController {
-
-    @Autowired
-    private ReceiptService receiptService;
-
-    @PostMapping
-    public ResponseEntity<Receipt> collectFee(@RequestBody Receipt receipt) {
-        Receipt savedReceipt = receiptService.collectFee(receipt);
-        return new ResponseEntity<>(savedReceipt, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/receipts/{studentId}")
-    public ResponseEntity<List<Receipt>> getReceiptsByStudentId(@PathVariable String studentId) {
-        List<Receipt> receipts = receiptService.getReceiptsByStudentId(studentId);
-        return new ResponseEntity<>(receipts, HttpStatus.OK);
-    }
-}
-```
 
 Feel free to reach out if you have any questions or need further assistance.
+
