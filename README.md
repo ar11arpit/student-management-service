@@ -1,16 +1,15 @@
 ## Student Management and Fee Collection Microservices
 
-This project consists of two microservices built using Spring Boot to manage student information and fee collection. It includes RESTful APIs to add students, collect fees, and view receipts. The project also provides Swagger specifications and Postman collections for testing the APIs.
+This project consists of two microservices built using Spring Boot to manage student information and fee collection. It includes RESTful APIs to add students, collect fees, and view receipts. The project also provides Swagger specifications for documentation and testing purpose
 
 ### Table of Contents
 1. [Project Structure](#project-structure)
 2. [Technologies Used](#technologies-used)
 3. [Setup Instructions](#setup-instructions)
 4. [Swagger Documentation](#swagger-documentation)
-5. [Postman Collections](#postman-collections)
-6. [Endpoints](#endpoints)
-7. [Problem Statement](#problem-statement)
-8. [Fee Collection Details](#fee-collection-details)
+5. [Endpoints](#endpoints)
+6. [Problem Statement](#problem-statement)
+7. [Fee Collection Details](#fee-collection-details)
 
 ### Project Structure
 - `ms-student-service`: Manages student data.
@@ -55,9 +54,6 @@ Once the services are up and running, Swagger UI can be accessed at:
 - **Student Service**: [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html)
 - **Fee Service**: [http://localhost:8083/swagger-ui.html](http://localhost:8083/swagger-ui.html)
 
-### Postman Collections
-The Postman collections for testing the APIs can be found in the `postman` directory of the project. Import these collections into Postman to test the endpoints.
-
 ### Endpoints
 
 #### Student Service
@@ -89,7 +85,7 @@ The goal of this project is to create a set of microservices to manage student f
 
 - **API Design**: API First or Code First design approach for the APIs.
 
-- **Documentation and Testing**: Swagger specifications and Postman collections for API testing.
+- **Documentation and Testing**: Swagger specifications and Postman for API testing.
 
 ### Fee Collection Details
 
