@@ -52,8 +52,8 @@ docker-compose up --build
 `ms-fee-collection-service`: Navigate to The Root Project and Import `ms-fee-collection-service` to your IDE and run build and start the service.
 ### Swagger Documentation
 Once the services are up and running, Swagger UI can be accessed at:
-- **Student Service**: [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
-- **Fee Service**: [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html)
+- **Student Service**: [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html)
+- **Fee Service**: [http://localhost:8083/swagger-ui.html](http://localhost:8083/swagger-ui.html)
 
 ### Postman Collections
 The Postman collections for testing the APIs can be found in the `postman` directory of the project. Import these collections into Postman to test the endpoints.
