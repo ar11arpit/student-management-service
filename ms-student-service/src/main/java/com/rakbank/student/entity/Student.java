@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @NotBlank(message = "Student name is mandatory")
@@ -24,6 +25,7 @@ public class Student {
     private String studentName;
 
     @Schema(description = "Unique ID of the student", example = "ST12345", required = true)
+    @JsonIgnore
     private String studentId;
 
     @NotBlank(message = "Grade is mandatory")
