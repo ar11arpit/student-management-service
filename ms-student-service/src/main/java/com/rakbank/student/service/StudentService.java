@@ -8,5 +8,5 @@ public interface StudentService {
 
     StudentResponse addStudent(Student student) ;
 
-    List<Student> getStudentDetials();
+    List<StudentResponse> getStudentDetials();
 }
