@@ -18,6 +18,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
 
     public StudentResponse addStudent(Student student) {
+        student.setStudentId(student.getStudentName());
         return mapToResponse(studentRepository.save(student));
     }
 
@@ -36,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
     
     public StudentResponse mapToResponse(Student student) {
         StudentResponse studentResponse = new StudentResponse();
-        studentResponse.setStudentId(Utils.generateStudentId());
+        studentResponse.setStudentId(student.getStudentId());
         studentResponse.setId(student.getId());
         studentResponse.setStudentName(student.getStudentName());
         studentResponse.setGrade(student.getGrade());
