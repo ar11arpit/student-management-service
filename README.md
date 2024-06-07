@@ -32,7 +32,7 @@ This project consists of two microservices built using Spring Boot to manage stu
 
 #### Clone the Repository
 ```bash
-git clone https://github.com/your-github-username/student-management-system.git
+git clone https://github.com/at11arpit/student-management-system.git
 cd student-management-system
 git checkout master
 ```
