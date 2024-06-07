@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 import java.util.Optional;
 @RestController
@@ -30,6 +31,13 @@ public class StudentController {
     @Operation(summary = "Get student by ID", description = "Retrieve student details by student ID")
     public ResponseEntity<StudentResponse> getStudent(@PathVariable String studentId) {
         StudentResponse student = studentService.getStudentByStudentId(studentId);
+        return ResponseEntity.status(HttpStatus.OK).body(student);
+    }
+
+    @GetMapping
+    @Operation(summary = "Get All students", description = "Retrieve All student details")
+    public ResponseEntity<List<Student>> getStudentDetails() {
+        List<Student> student = studentService.getStudentDetials();
         return ResponseEntity.status(HttpStatus.OK).body(student);
     }
 }
