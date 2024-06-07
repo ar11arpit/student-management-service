@@ -28,8 +28,9 @@ public class StudentServiceImpl implements StudentService {
         return mapToResponse(studentOptional.get());
     }
 
-    public List<Student> getStudentDetials() {
-        return studentRepository.findAll();
+     @Override
+    public List<StudentResponse> getStudentDetials() {
+        return studentRepository.findAll().stream().map(student->mapToResponse(student)).collect(Collectors.toList());
     }
     
     public StudentResponse mapToResponse(Student student) {
