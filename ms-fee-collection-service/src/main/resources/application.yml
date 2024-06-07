@@ -22,4 +22,4 @@ server:
   port: 8082
 api:
   student:
-    details: http://localhost:8083/student/
+    details: http://localhost:8083/api/student/
