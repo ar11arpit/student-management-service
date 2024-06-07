@@ -36,8 +36,8 @@ public class StudentController {
 
     @GetMapping
     @Operation(summary = "Get All students", description = "Retrieve All student details")
-    public ResponseEntity<List<Student>> getStudentDetails() {
-        List<Student> student = studentService.getStudentDetials();
+    public ResponseEntity<List<StudentResponse>> getStudentDetails() {
+        List<StudentResponse> student = studentService.getStudentDetials();
         return ResponseEntity.status(HttpStatus.OK).body(student);
     }
 }
