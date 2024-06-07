@@ -26,6 +26,11 @@ public class StudentServiceImpl implements StudentService {
         }
         return mapToResponse(studentOptional.get());
     }
+
+    public List<Student> getStudentDetials() {
+        return studentRepository.findAll();
+    }
+    
     public StudentResponse mapToResponse(Student student) {
         StudentResponse studentResponse = new StudentResponse();
         studentResponse.setStudentId(Utils.generateStudentId());
