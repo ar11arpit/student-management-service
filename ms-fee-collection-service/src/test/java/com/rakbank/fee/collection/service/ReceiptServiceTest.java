@@ -3,30 +3,28 @@ package com.rakbank.fee.collection.service;
 import com.rakbank.fee.collection.entity.Receipt;
 import com.rakbank.fee.collection.entity.Student;
 import com.rakbank.fee.collection.repository.ReceiptRepository;
+import com.rakbank.fee.collection.response.ReceiptResponse;
 import com.rakbank.fee.collection.service.impl.ReceiptServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ReceiptServiceTest {
+class ReceiptServiceTest {
 
     @Mock
     private ReceiptRepository receiptRepository;
@@ -37,76 +35,89 @@ public class ReceiptServiceTest {
     @InjectMocks
     private ReceiptServiceImpl receiptService;
 
-    @Value("${api.student.details}")
-    private String studentDetailsEndpoint = "http://localhost:8080/students/";
+    @Test
+    void collectFee_StudentNotFound() {
+        when(restTemplate.getForEntity(anyString(), eq(Student.class)))
+                .thenReturn(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
 
-    @BeforeEach
-    void setUp() {
-        // Inject the studentDetailsEndpoint value
-        ReflectionTestUtils.setField(receiptService, "studentDetailsEndpoint", studentDetailsEndpoint);
+        Receipt receipt = new Receipt();
+        receipt.setStudentId("S12345");
+        receipt.setAmount(BigDecimal.valueOf(500));
+
+        assertThrows(RuntimeException.class, () -> receiptService.collectFee(receipt));
+
+        verify(restTemplate).getForEntity(anyString(), eq(Student.class));
     }
 
     @Test
-    void testCollectFee_Success() {
-        // Arrange
+    void collectFee_FeePaidFully() {
+        when(restTemplate.getForEntity(anyString(), eq(Student.class)))
+                .thenReturn(new ResponseEntity<>(new Student("S12345", BigDecimal.valueOf(500)), HttpStatus.OK));
+
         Receipt receipt = new Receipt();
-        receipt.setStudentId("1");
-        receipt.setAmount(BigDecimal.valueOf(1000.0));
+        receipt.setStudentId("S12345");
+        receipt.setAmount(BigDecimal.valueOf(500));
 
-        Student student = new Student();
-        student.setId(Long.valueOf("1"));
-        ResponseEntity<Student> responseEntity = new ResponseEntity<>(student, HttpStatus.OK);
+        assertThrows(RuntimeException.class, () -> receiptService.collectFee(receipt));
 
-        when(restTemplate.getForEntity(studentDetailsEndpoint + receipt.getStudentId(), Student.class))
-                .thenReturn(responseEntity);
-        when(receiptRepository.save(receipt)).thenReturn(receipt);
+        verify(restTemplate).getForEntity(anyString(), eq(Student.class));
+    }
 
-        // Act
-        Receipt savedReceipt = receiptService.collectFee(receipt);
+    @Test
+    void collectFee_Successful() {
+        when(restTemplate.getForEntity(anyString(), eq(Student.class)))
+                .thenReturn(new ResponseEntity<>(new Student("S12345", BigDecimal.valueOf(1000)), HttpStatus.OK));
 
-        // Assert
-        assertNotNull(savedReceipt);
-        assertEquals(receipt.getStudentId(), savedReceipt.getStudentId());
-        assertEquals(receipt.getAmount(), savedReceipt.getAmount());
+        when(receiptRepository.save(any(Receipt.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Receipt receipt = new Receipt(
+                1L,
+                "S12345",
+                "TXN123456789",
+                BigDecimal.valueOf(1500.00),
+                LocalDateTime.of(2024, 6, 8, 10, 30),
+                "Credit Card",
+                "1234567812345678",
+                "REF123456789"
+        );
+
+        ReceiptResponse response = receiptService.collectFee(receipt);
+
+        assertNotNull(response);
+        assertNotNull(response.getTransactionId());
+        assertNotNull(response.getReferenceNumber());
+        assertEquals("S12345", response.getStudentId());
+        assertEquals(BigDecimal.valueOf(1500.0), response.getAmount());
+        assertNotNull(response.getTransactionDate());
+        assertNotNull(response.getPaymentMethod());
+        assertNotNull(response.getCreditCardNumber());
+
+        verify(restTemplate).getForEntity(anyString(), eq(Student.class));
         verify(receiptRepository, times(1)).save(receipt);
     }
 
     @Test
-    void testCollectFee_StudentNotFound() {
-        // Arrange
-        Receipt receipt = new Receipt();
-        receipt.setStudentId("1");
-        receipt.setAmount(BigDecimal.valueOf(1000.0));
+    void getReceiptsByStudentId_StudentNotRegistered() {
+        when(receiptRepository.findByStudentId("S12345")).thenReturn(new ArrayList<>());
 
-        ResponseEntity<Student> responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        assertThrows(RuntimeException.class, () -> receiptService.getReceiptsByStudentId("S12345"));
 
-        when(restTemplate.getForEntity(studentDetailsEndpoint + receipt.getStudentId(), Student.class))
-                .thenReturn(responseEntity);
-
-        // Act & Assert
-        Exception exception = assertThrows(RuntimeException.class, () -> receiptService.collectFee(receipt));
-        assertEquals("Student not found", exception.getMessage());
-        verify(receiptRepository, never()).save(receipt);
+        verify(receiptRepository, times(1)).findByStudentId("S12345");
     }
 
     @Test
-    void testGetReceiptsByStudentId() {
-        // Arrange
-        String studentId = "1";
-        Receipt receipt = new Receipt();
-        receipt.setStudentId(studentId);
-        receipt.setAmount(BigDecimal.valueOf(1000.0));
-        List<Receipt> receipts = Collections.singletonList(receipt);
+    void getReceiptsByStudentId_Successful() {
+        List<Receipt> receipts = new ArrayList<>();
+        receipts.add(new Receipt());
+        receipts.add(new Receipt());
+        when(receiptRepository.findByStudentId("S12345")).thenReturn(receipts);
 
-        when(receiptRepository.findByStudentId(studentId)).thenReturn(receipts);
+        List<ReceiptResponse> responseList = receiptService.getReceiptsByStudentId("S12345");
 
-        // Act
-        List<Receipt> result = receiptService.getReceiptsByStudentId(studentId);
+        assertNotNull(responseList);
+        assertEquals(2, responseList.size());
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals(receipt, result.get(0));
-        verify(receiptRepository, times(1)).findByStudentId(studentId);
+        verify(receiptRepository, times(1)).findByStudentId("S12345");
     }
 }

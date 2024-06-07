@@ -1,11 +1,12 @@
 package com.rakbank.fee.collection.service;
 
 import com.rakbank.fee.collection.entity.Receipt;
+import com.rakbank.fee.collection.response.ReceiptResponse;
 
 import java.util.List;
 
 public interface ReceiptService {
-    Receipt collectFee(Receipt receipt);
+    ReceiptResponse collectFee(Receipt receipt);
 
-    List<Receipt> getReceiptsByStudentId(String studentId);
+    List<ReceiptResponse> getReceiptsByStudentId(String studentId);
 }

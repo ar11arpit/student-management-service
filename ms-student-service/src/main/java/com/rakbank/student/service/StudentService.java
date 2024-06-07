@@ -1,11 +1,10 @@
 package com.rakbank.student.service;
 
 import com.rakbank.student.entity.Student;
-
-import java.util.Optional;
+import com.rakbank.student.response.StudentResponse;
 
 public interface StudentService {
-    Optional<Student> getStudentByStudentId(String studentId);
+    StudentResponse getStudentByStudentId(String studentId);
 
-    Student addStudent(Student student) ;
+    StudentResponse addStudent(Student student) ;
 }

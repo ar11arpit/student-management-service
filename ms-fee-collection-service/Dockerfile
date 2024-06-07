@@ -14,7 +14,7 @@ ADD pom.xml /app
 # Image layer: with the application
 COPY . /app
 
-RUN mvn clean package -DskipTests
+RUN mvn clean package
 
 ###########Final Image############
 

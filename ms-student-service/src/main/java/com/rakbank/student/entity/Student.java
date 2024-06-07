@@ -1,18 +1,19 @@
 package com.rakbank.student.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Schema(description = "Entity representing a student")
 @Entity
+@Table(name = "Student")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +23,6 @@ public class Student {
     @Schema(description = "Name of the student", example = "John Doe", required = true)
     private String studentName;
 
-    @NotBlank(message = "Student ID is mandatory")
-    @Size(min = 5, max = 10, message = "Student ID must be between 5 and 10 characters")
     @Schema(description = "Unique ID of the student", example = "ST12345", required = true)
     private String studentId;
 
@@ -40,5 +39,7 @@ public class Student {
     @Schema(description = "Name of the school", example = "Springfield High", required = true)
     private String schoolName;
 
-    // Getters and Setters
+    @NotBlank(message = "Yearly fee is mandatory")
+    @Schema(description = "Grade of the student",minimum = "1",example = "20000", required = true)
+    private BigDecimal yearlyFee;
 }
