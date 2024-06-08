@@ -2,6 +2,7 @@ package com.rakbank.fee.collection.controller;
 
 import com.rakbank.fee.collection.entity.Receipt;
 import com.rakbank.fee.collection.dto.ReceiptResponse;
+import com.rakbank.fee.collection.exceptions.CustomException;
 import com.rakbank.fee.collection.service.ReceiptService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +31,7 @@ public class ReceiptControllerTest {
     private ReceiptController receiptController;
 
     @Test
-    public void testCollectFee() {
+    public void testCollectFee() throws CustomException {
         Receipt receipt = new Receipt();
         receipt.setStudentId("ST12345");
         receipt.setAmount(BigDecimal.valueOf(1500.00));

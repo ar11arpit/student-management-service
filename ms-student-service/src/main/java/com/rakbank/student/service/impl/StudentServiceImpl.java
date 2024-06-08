@@ -8,8 +8,6 @@ import com.rakbank.student.repository.StudentRepository;
 import com.rakbank.student.dto.StudentResponse;
 import com.rakbank.student.service.StudentService;
 import com.rakbank.student.utils.Utils;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

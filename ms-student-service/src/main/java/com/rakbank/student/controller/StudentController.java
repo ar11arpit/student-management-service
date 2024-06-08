@@ -2,6 +2,7 @@ package com.rakbank.student.controller;
 
 import com.rakbank.student.dto.StudentRequest;
 import com.rakbank.student.entity.Student;
+import com.rakbank.student.exceptions.CustomException;
 import com.rakbank.student.repository.StudentRepository;
 import com.rakbank.student.dto.StudentResponse;
 import com.rakbank.student.service.StudentService;
@@ -31,7 +32,7 @@ public class StudentController {
 
     @GetMapping("/{studentId}")
     @Operation(summary = "Get student by ID", description = "Retrieve student details by student ID")
-    public ResponseEntity<StudentResponse> getStudent(@PathVariable String studentId) {
+    public ResponseEntity<StudentResponse> getStudent(@PathVariable String studentId) throws CustomException {
         StudentResponse student = studentService.getStudentByStudentId(studentId);
         return ResponseEntity.status(HttpStatus.OK).body(student);
     }

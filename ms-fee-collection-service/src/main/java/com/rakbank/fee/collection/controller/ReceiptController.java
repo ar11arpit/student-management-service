@@ -2,6 +2,7 @@ package com.rakbank.fee.collection.controller;
 
 import com.rakbank.fee.collection.entity.Receipt;
 import com.rakbank.fee.collection.dto.ReceiptResponse;
+import com.rakbank.fee.collection.exceptions.CustomException;
 import com.rakbank.fee.collection.service.ReceiptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +22,7 @@ public class ReceiptController {
 
     @PostMapping
     @Operation(summary = "Collect fee", description = "Collect fee and generate a receipt")
-    public ResponseEntity<ReceiptResponse> collectFee(@RequestBody Receipt receipt) {
+    public ResponseEntity<ReceiptResponse> collectFee(@RequestBody Receipt receipt) throws CustomException {
         ReceiptResponse savedReceipt = receiptService.collectFee(receipt);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedReceipt);
     }

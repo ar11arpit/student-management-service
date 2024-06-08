@@ -3,6 +3,7 @@ package com.rakbank.student.controller;
 import com.rakbank.student.dto.StudentRequest;
 import com.rakbank.student.entity.Student;
 import com.rakbank.student.dto.StudentResponse;
+import com.rakbank.student.exceptions.CustomException;
 import com.rakbank.student.service.StudentService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +57,7 @@ public class StudentControllerTest {
     }
 
     @Test
-    public void testGetStudent() {
+    public void testGetStudent() throws CustomException {
         Mockito.when(studentService.getStudentByStudentId("ST12345")).thenReturn(studentResponse);
         ResponseEntity<StudentResponse> response = studentController.getStudent("ST12345");
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
