@@ -1,47 +1,39 @@
 package com.rakbank.student.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
-@Schema(description = "Entity representing a student")
+@Getter
+@Setter
 @Entity
-@Table(name = "Student")
+@Table(name = "student")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
-
-    @NotBlank(message = "Student name is mandatory")
-    @Schema(description = "Name of the student", example = "John Doe", required = true)
+    @NotNull
+    @Column(name = "student_name")
     private String studentName;
 
-    @Schema(description = "Unique ID of the student", example = "ST12345", required = true)
-    @JsonIgnore
+    @NotNull
+    @Column(name = "student_id", insertable = true,nullable = false)
     private String studentId;
-
-    @NotBlank(message = "Grade is mandatory")
-    @Schema(description = "Grade of the student", example = "10", required = true)
+    @NotNull
+    @Column(name = "grade")
     private String grade;
-
-    @NotBlank(message = "Mobile number is mandatory")
-    @Pattern(regexp = "^\\d{10}$", message = "Mobile number must be 10 digits")
-    @Schema(description = "Mobile number of the student", example = "1234567890", required = true)
+    @NotNull
+    @Column(name = "mobile_number")
     private String mobileNumber;
 
-    @NotBlank(message = "School name is mandatory")
-    @Schema(description = "Name of the school", example = "Springfield High", required = true)
+    @NotNull
+    @Column(name = "school_name")
     private String schoolName;
-
-    @NotBlank(message = "Yearly fee is mandatory")
-    @Schema(description = "Grade of the student",minimum = "1",example = "20000", required = true)
+    @NotNull
+    @Column(name = "yearly_fee")
     private BigDecimal yearlyFee;
+
 }

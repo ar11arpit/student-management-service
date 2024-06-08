@@ -13,6 +13,10 @@ spring:
       enabled: true
       settings.trace: false
       settings.web-allow-others: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 springdoc:
   api-docs:
     path: /api-docs

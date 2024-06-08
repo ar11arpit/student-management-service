@@ -1,7 +1,9 @@
 package com.rakbank.student.controller;
 
+import com.rakbank.student.dto.StudentRequest;
 import com.rakbank.student.entity.Student;
-import com.rakbank.student.response.StudentResponse;
+import com.rakbank.student.repository.StudentRepository;
+import com.rakbank.student.dto.StudentResponse;
 import com.rakbank.student.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-import java.util.Optional;
 @RestController
 @RequestMapping("/api/student")
 @Tag(name = "Student API", description = "API for managing students")
@@ -22,7 +24,7 @@ public class StudentController {
 
     @PostMapping
     @Operation(summary = "Add a new student", description = "Add a new student to the database")
-    public ResponseEntity<StudentResponse> addStudent(@Valid @RequestBody Student student) {
+    public ResponseEntity<StudentResponse> addStudent(@Valid @RequestBody StudentRequest student) {
         StudentResponse savedStudent = studentService.addStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
     }

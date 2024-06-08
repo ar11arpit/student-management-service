@@ -11,10 +11,7 @@ public class Utils {
     private static Set<String> generatedIds = new HashSet<>();
 
     public static String generateStudentId() {
-        String studentId;
-        do {
-            studentId = generateRandomStudentId();
-        } while (!generatedIds.add(studentId)); // Ensure uniqueness by retrying if ID already exists
+        String studentId = generateRandomStudentId();
         return studentId;
     }
 
@@ -26,12 +23,15 @@ public class Utils {
     }
 
     private static String generateRandomDigits(int count) {
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < count; i++) {
-            sb.append(random.nextInt(10));
+        final long seed = System.currentTimeMillis();
+        final Random rng = new Random(seed);
+
+
+        long number = rng.nextLong() % 100000000L;
+        if (number < 0) {
+            number *= -1;
         }
-        return sb.toString();
+        return number+"";
     }
 }
 

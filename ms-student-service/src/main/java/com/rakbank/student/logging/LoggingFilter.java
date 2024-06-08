@@ -29,7 +29,6 @@ public class LoggingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        log.info("Inside ms commons filter");
         if (isAsyncDispatch(request)) {
             filterChain.doFilter(request, response);
         } else {

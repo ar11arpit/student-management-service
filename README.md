@@ -19,8 +19,7 @@ This project consists of two microservices built using Spring Boot to manage stu
 - Spring Boot (latest version)
 - Spring Data JPA
 - H2 In-memory Database
-- Swagger for API Documentation
-- Postman for API Testing
+- Swagger for API Documentation and API Testing
 
 ### Setup Instructions
 
@@ -51,18 +50,18 @@ docker-compose up --build
 `ms-fee-collection-service`: Navigate to The Root Project and Import `ms-fee-collection-service` to your IDE and run build and start the service.
 ### Swagger Documentation
 Once the services are up and running, Swagger UI can be accessed at:
-- **Student Service**: [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html)
-- **Fee Service**: [http://localhost:8083/swagger-ui.html](http://localhost:8083/swagger-ui.html)
+- **Student Service**: [http://localhost:8082/swagger-ui.html](http://localhost:8083/swagger-ui.html)
+- **Fee Service**: [http://localhost:8083/swagger-ui.html](http://localhost:8082/swagger-ui.html)
 
 ### Endpoints
 
 #### Student Service
-- **POST /student**: Add a new student
-- **GET /student/{studentId}**: Get student details by ID
+- **POST /api/student**: Add a new student
+- **GET /api/student/{studentId}**: Get student details by ID
 
 #### Fee Service
-- **POST /fees**: Collect fee for a student
-- **GET /receipt/{studentId}**: Get receipts by student ID
+- **POST /api/fees**: Collect fee for a student
+- **GET /api/receipt/{studentId}**: Get receipts by student ID
 
 ### Problem Statement
 
@@ -75,6 +74,7 @@ The goal of this project is to create a set of microservices to manage student f
     - Grade
     - Mobile Number
     - School Name
+    - Yearly Fee (Added extra for receipt validation) 
 
 - **Fee Collection**: APIs to collect fees and view receipts.
   - **Fields**:
@@ -85,7 +85,7 @@ The goal of this project is to create a set of microservices to manage student f
 
 - **API Design**: API First or Code First design approach for the APIs.
 
-- **Documentation and Testing**: Swagger specifications and Postman for API testing.
+- **Documentation and Testing**: Swagger specifications for API testing.
 
 ### Fee Collection Details
 
@@ -93,11 +93,15 @@ The goal of this project is to create a set of microservices to manage student f
 The fields for the receipt should closely match the following sample receipt structure:
 
 - **Receipt Fields**:
-  - `receiptId`: Unique identifier for the receipt.
+  - `transactionId`: Unique identifier for the transaction.
   - `studentId`: Unique identifier for the student.
   - `amount`: The fee amount collected.
-  - `date`: The date of fee collection.
-  - `description`: Description of the fee collected (optional).
+  - `transactionDate`: The date of fee transaction.
+  - `paymentMethod`: The Method of the fee payment.
+  - `grade`:  amount collected.
+  - `creditCardNumber`: Credit Card number.
+  - `paymentMethod`: The Method of the fee payment.
+  - `referenceNumber`: Reference number
 
 #### Data Access
 - **Spring Data JPA**: Used for data access.

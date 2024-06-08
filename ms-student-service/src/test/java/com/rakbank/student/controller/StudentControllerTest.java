@@ -1,7 +1,8 @@
 package com.rakbank.student.controller;
 
+import com.rakbank.student.dto.StudentRequest;
 import com.rakbank.student.entity.Student;
-import com.rakbank.student.response.StudentResponse;
+import com.rakbank.student.dto.StudentResponse;
 import com.rakbank.student.service.StudentService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,11 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Optional;
+import java.util.List;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -28,7 +28,7 @@ public class StudentControllerTest {
     private StudentController studentController;
 
     private StudentResponse studentResponse;
-    private Student student;
+    private StudentRequest student;
 
     @BeforeEach
     public void setUp() {
@@ -39,9 +39,8 @@ public class StudentControllerTest {
         studentResponse.setMobileNumber("1234567890");
         studentResponse.setSchoolName("Springfield High");
 
-        student = new Student();
+        student = new StudentRequest();
         student.setStudentName("John Doe");
-        student.setStudentId("ST12345");
         student.setGrade("10");
         student.setMobileNumber("1234567890");
         student.setSchoolName("Springfield High");
@@ -49,7 +48,7 @@ public class StudentControllerTest {
 
     @Test
     public void testAddStudent() {
-        Mockito.when(studentService.addStudent(Mockito.any(Student.class))).thenReturn(studentResponse);
+        Mockito.when(studentService.addStudent(Mockito.any(StudentRequest.class))).thenReturn(studentResponse);
         ResponseEntity<StudentResponse> response = studentController.addStudent(student);
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
@@ -63,5 +62,12 @@ public class StudentControllerTest {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
         Assertions.assertEquals("John Doe", response.getBody().getStudentName());
+    }
+    @Test
+    public void testGetAllStudent() {
+        Mockito.when(studentService.getStudentDetials()).thenReturn(List.of(studentResponse));
+        ResponseEntity<List<StudentResponse>> response = studentController.getStudentDetails();
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertNotNull(response.getBody());
     }
 }

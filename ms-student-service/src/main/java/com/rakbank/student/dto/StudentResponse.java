@@ -1,16 +1,8 @@
-package com.rakbank.student.response;
+package com.rakbank.student.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.awt.geom.QuadCurve2D;
 import java.math.BigDecimal;
 
 @Data
