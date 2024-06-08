@@ -27,6 +27,11 @@ public class Receipt {
     @Schema(description = "ID of the student involved in the transaction", example = "S12345", required = true)
     private String studentId;
 
+    @NotBlank(message = "Student ID is mandatory")
+    @Column(nullable = false)
+    @Schema(description = "ID of the student involved in the transaction", example = "S12345", required = true)
+    private String grade;
+
 
     @Schema(description = "Unique identifier of the transaction", example = "TXN123456789", required = true)
     @JsonIgnore

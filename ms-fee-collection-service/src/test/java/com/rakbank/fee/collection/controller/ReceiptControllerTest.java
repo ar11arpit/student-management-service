@@ -1,7 +1,7 @@
 package com.rakbank.fee.collection.controller;
 
 import com.rakbank.fee.collection.entity.Receipt;
-import com.rakbank.fee.collection.response.ReceiptResponse;
+import com.rakbank.fee.collection.dto.ReceiptResponse;
 import com.rakbank.fee.collection.service.ReceiptService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

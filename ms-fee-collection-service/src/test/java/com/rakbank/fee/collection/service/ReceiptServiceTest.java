@@ -1,9 +1,10 @@
 package com.rakbank.fee.collection.service;
 
 import com.rakbank.fee.collection.entity.Receipt;
-import com.rakbank.fee.collection.entity.Student;
+import com.rakbank.fee.collection.dto.Student;
+import com.rakbank.fee.collection.exceptions.CustomException;
 import com.rakbank.fee.collection.repository.ReceiptRepository;
-import com.rakbank.fee.collection.response.ReceiptResponse;
+import com.rakbank.fee.collection.dto.ReceiptResponse;
 import com.rakbank.fee.collection.service.impl.ReceiptServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -64,7 +64,7 @@ class ReceiptServiceTest {
     }
 
     @Test
-    void collectFee_Successful() {
+    void collectFee_Successful() throws CustomException {
         when(restTemplate.getForEntity(anyString(), eq(Student.class)))
                 .thenReturn(new ResponseEntity<>(new Student("S12345", BigDecimal.valueOf(1000)), HttpStatus.OK));
 
@@ -74,6 +74,7 @@ class ReceiptServiceTest {
         Receipt receipt = new Receipt(
                 1L,
                 "S12345",
+                "1",
                 "TXN123456789",
                 BigDecimal.valueOf(1500.00),
                 LocalDateTime.of(2024, 6, 8, 10, 30),

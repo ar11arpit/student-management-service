@@ -1,9 +1,11 @@
 package com.rakbank.fee.collection.service.impl;
 
 import com.rakbank.fee.collection.entity.Receipt;
-import com.rakbank.fee.collection.entity.Student;
+import com.rakbank.fee.collection.dto.Student;
+import com.rakbank.fee.collection.exceptions.CustomException;
+import com.rakbank.fee.collection.exceptions.ErrorType;
 import com.rakbank.fee.collection.repository.ReceiptRepository;
-import com.rakbank.fee.collection.response.ReceiptResponse;
+import com.rakbank.fee.collection.dto.ReceiptResponse;
 import com.rakbank.fee.collection.service.ReceiptService;
 import com.rakbank.fee.collection.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,20 +28,22 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Value("${api.student.details}")
     private String studentDetailsEndpoint;
 
-    public ReceiptResponse collectFee(Receipt receipt) {
+    public ReceiptResponse collectFee(Receipt receipt) throws CustomException {
         ResponseEntity<Student> response = restTemplate.getForEntity(
                 studentDetailsEndpoint + receipt.getStudentId(), Student.class);
         Student student = response.getBody();
         if (response.getBody()==null) {
-            throw new RuntimeException("Student not found");
+            throw new CustomException("Student not found", ErrorType.FUNCTIONAL);
         }
         if(student.getYearlyFee().compareTo(receipt.getAmount())==0){
-            throw new RuntimeException("Fees is paid fully for the year");
+            throw new CustomException("Fees is paid fully.", ErrorType.FUNCTIONAL);
         }
-
         receipt.setTransactionId(Utils.generateTransactionId());
         receipt.setReferenceNumber(Utils.generateReferenceId());
-        return mapToResponse(receiptRepository.save(receipt));
+        ReceiptResponse receiptResponse = mapToResponse(receiptRepository.save(receipt));
+        receiptResponse.setGrade(student.getGrade());
+
+        return receiptResponse;
     }
 
     public List<ReceiptResponse> getReceiptsByStudentId(String studentId) {
