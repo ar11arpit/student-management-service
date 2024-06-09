@@ -44,7 +44,7 @@ class ReceiptServiceTest {
         receipt.setStudentId("S12345");
         receipt.setAmount(BigDecimal.valueOf(500));
 
-        assertThrows(RuntimeException.class, () -> receiptService.collectFee(receipt));
+        assertThrows(CustomException.class, () -> receiptService.collectFee(receipt));
 
         verify(restTemplate).getForEntity(anyString(), eq(Student.class));
     }
@@ -58,7 +58,7 @@ class ReceiptServiceTest {
         receipt.setStudentId("S12345");
         receipt.setAmount(BigDecimal.valueOf(500));
 
-        assertThrows(RuntimeException.class, () -> receiptService.collectFee(receipt));
+        assertThrows(CustomException.class, () -> receiptService.collectFee(receipt));
 
         verify(restTemplate).getForEntity(anyString(), eq(Student.class));
     }

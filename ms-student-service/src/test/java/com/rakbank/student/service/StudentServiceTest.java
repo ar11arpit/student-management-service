@@ -2,6 +2,7 @@ package com.rakbank.student.service;
 
 import com.rakbank.student.dto.StudentRequest;
 import com.rakbank.student.entity.Student;
+import com.rakbank.student.exceptions.CustomException;
 import com.rakbank.student.repository.StudentRepository;
 import com.rakbank.student.dto.StudentResponse;
 import com.rakbank.student.service.impl.StudentServiceImpl;
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,7 +49,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void getStudentByStudentId_ExistingStudent_Success() {
+    void getStudentByStudentId_ExistingStudent_Success() throws CustomException {
         Student existingStudent = new Student();
         existingStudent.setStudentName("John Doe");
 
@@ -67,7 +66,7 @@ public class StudentServiceTest {
     void getStudentByStudentId_NonExistingStudent_Failure() {
         when(studentRepository.findByStudentId("S12345")).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> studentService.getStudentByStudentId("S12345"));
+        CustomException exception = assertThrows(CustomException.class, () -> studentService.getStudentByStudentId("S12345"));
         assertEquals("student not found", exception.getMessage());
 
         verify(studentRepository, times(1)).findByStudentId("S12345");
